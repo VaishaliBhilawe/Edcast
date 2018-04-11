@@ -1,0 +1,8 @@
+D:\IE-Addons\GuideMePlayer\Release\GuideMePlayer.dll
+D:\IE-Addons\GuideMePlayer\Release\GuideMePlayer.pdb
+D:\IE-Addons\GuideMePlayer\GuideMePlayer\obj\Release\Interop.SHDocVw.dll
+D:\IE-Addons\GuideMePlayer\GuideMePlayer\obj\Release\GuideMePlayer.csproj.ResolveComReference.cache
+D:\IE-Addons\GuideMePlayer\GuideMePlayer\obj\Release\GuideMePlayer.csproj.CoreCompileInputs.cache
+D:\IE-Addons\GuideMePlayer\GuideMePlayer\obj\Release\GuideMePlayer.dll
+D:\IE-Addons\GuideMePlayer\GuideMePlayer\obj\Release\GuideMePlayer.pdb
+D:\IE-Addons\GuideMePlayer\GuideMePlayer\obj\Release\GuideMePlayer.csprojResolveAssemblyReference.cache
