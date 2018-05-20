@@ -15,6 +15,12 @@
     {
         "Entry"
         {
+        "MsmKey" = "8:_40AF99740350617A53663BB7B763CF6F"
+        "OwnerKey" = "8:_62C4DF0063DE4161AB1FD14FD0D2D9C4"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_62C4DF0063DE4161AB1FD14FD0D2D9C4"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -49,6 +55,22 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.6.1"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.6.1 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.6.1"
+                    }
+                }
+            }
         }
         "Release"
         {
@@ -65,6 +87,22 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.6.1"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.6.1 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.6.1"
+                    }
+                }
+            }
         }
     }
     "Deployable"
@@ -142,7 +180,7 @@
                 {
                 "Name" = "8:.NET Framework"
                 "Message" = "8:[VSDNETMSG]"
-                "FrameworkVersion" = "8:.NETFramework,Version=v4.6.1"
+                "FrameworkVersion" = "8:.NETFramework,Version=v4.0,Profile=Client"
                 "AllowLaterVersions" = "11:FALSE"
                 "InstallUrl" = "8:http://go.microsoft.com/fwlink/?LinkId=671728"
                 }
@@ -150,6 +188,26 @@
         }
         "File"
         {
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_40AF99740350617A53663BB7B763CF6F"
+            {
+            "SourcePath" = "8:GuideMePlayer.tlb"
+            "TargetName" = "8:GuideMePlayer.tlb"
+            "Tag" = "8:"
+            "Folder" = "8:_3C421316155744BEBDCBB877D1AA2B63"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:2"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_CA7BB8CA35E04D129A6661E6A483627F"
             {
             "SourcePath" = "8:..\\GuideMePlayer\\icon.ico"
@@ -227,7 +285,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:GuideMePlayerSetup(x64)"
         "ProductCode" = "8:{9CAC02ED-BBF5-454E-8242-94EDD0C93E49}"
-        "PackageCode" = "8:{6F9625E0-C277-460E-A59F-96F9BA133D41}"
+        "PackageCode" = "8:{09F46A42-A4B0-4ECC-A6B0-A38B65490C88}"
         "UpgradeCode" = "8:{655617E6-F4FA-4A36-A25E-237C770271A6}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -748,7 +806,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_62C4DF0063DE4161AB1FD14FD0D2D9C4"
             {
-            "SourcePath" = "8:..\\GuideMePlayer\\obj\\Debug\\GuideMePlayer.dll"
+            "SourcePath" = "8:..\\GuideMePlayer\\obj\\Release\\GuideMePlayer.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_3C421316155744BEBDCBB877D1AA2B63"

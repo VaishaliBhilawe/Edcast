@@ -21,6 +21,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_D1C04F1F702FCF5A29E009D7AABDA85C"
+        "OwnerKey" = "8:_E75662EC2CDC4A1A811EA93C8EDD15A3"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_E75662EC2CDC4A1A811EA93C8EDD15A3"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -49,6 +55,14 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+            }
         }
         "Release"
         {
@@ -65,6 +79,14 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+            }
         }
     }
     "Deployable"
@@ -142,7 +164,7 @@
                 {
                 "Name" = "8:.NET Framework"
                 "Message" = "8:[VSDNETMSG]"
-                "FrameworkVersion" = "8:.NETFramework,Version=v4.6.1"
+                "FrameworkVersion" = "8:.NETFramework,Version=v4.0,Profile=Client"
                 "AllowLaterVersions" = "11:FALSE"
                 "InstallUrl" = "8:http://go.microsoft.com/fwlink/?LinkId=671728"
                 }
@@ -168,6 +190,26 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_D1C04F1F702FCF5A29E009D7AABDA85C"
+            {
+            "SourcePath" = "8:GuideMePlayer.tlb"
+            "TargetName" = "8:GuideMePlayer.tlb"
+            "Tag" = "8:"
+            "Folder" = "8:_407FE45AAA0A4FA99EA6B6A50517F0CB"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:2"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
         }
@@ -748,7 +790,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_E75662EC2CDC4A1A811EA93C8EDD15A3"
             {
-            "SourcePath" = "8:..\\GuideMePlayer\\obj\\Debug\\GuideMePlayer.dll"
+            "SourcePath" = "8:..\\GuideMePlayer\\obj\\Release\\GuideMePlayer.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_407FE45AAA0A4FA99EA6B6A50517F0CB"

@@ -7,3 +7,10 @@ D:\IE-Addons\GuideMePlayer\GuideMePlayer\obj\Debug\GuideMePlayer.csproj.CoreComp
 D:\IE-Addons\GuideMePlayer\GuideMePlayer\obj\Debug\GuideMePlayer.dll
 D:\IE-Addons\GuideMePlayer\GuideMePlayer\obj\Debug\GuideMePlayer.pdb
 D:\IE-Addons\GuideMePlayer\GuideMePlayer\obj\Debug\GuideMePlayer.tlb
+D:\office-work\guideme-ie\GuideMePlayer\obj\Debug\GuideMePlayer.csprojResolveAssemblyReference.cache
+D:\office-work\guideme-ie\GuideMePlayer\obj\Debug\Interop.SHDocVw.dll
+D:\office-work\guideme-ie\GuideMePlayer\obj\Debug\GuideMePlayer.csproj.ResolveComReference.cache
+D:\office-work\guideme-ie\GuideMePlayer\obj\Debug\GuideMePlayer.csproj.CoreCompileInputs.cache
+D:\office-work\guideme-ie\GuideMePlayer\obj\Debug\GuideMePlayer.dll
+D:\office-work\guideme-ie\GuideMePlayer\obj\Debug\GuideMePlayer.pdb
+D:\office-work\guideme-ie\GuideMePlayer\obj\Debug\GuideMePlayer.tlb

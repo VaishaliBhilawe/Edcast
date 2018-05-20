@@ -3,6 +3,7 @@ using mshtml;
 using Microsoft.Win32;
 using System.Runtime.InteropServices;
 using System;
+using SysForms = System.Windows.Forms;
 
 namespace GuideMePlayer
 {
@@ -17,11 +18,16 @@ namespace GuideMePlayer
     
     public class BHO : IObjectWithSite
     {
+        private const Boolean IS_32_BIT = true;
         private InternetExplorer ieInstance;
         public const string BHO_REGISTRY_KEY_NAME = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Browser Helper Objects";
         private const string EXTENSIONNAME = "GuideMePlayer";
         private const string JSPATH = "//guidemeprod.blob.core.windows.net/guideme-player-ie/guideme.js";
-        private const string USERKEY = "FD5B8ED4-31D8-4015-8E87-4D8C5A0B0B45";
+        private const string USERKEY = "A74BA838-8DEC-4AEE-961D-076AB30ECBCA";
+
+        //FD5B8ED4-31D8-4015-8E87-4D8C5A0B0B45 admin userkey
+
+       
 
         private WebBrowser webBrowser;
 
@@ -36,54 +42,65 @@ namespace GuideMePlayer
         [ComRegisterFunction]
         public static void RegisterBHO(Type t)
         {
-
-
             
             RegistryKey key = Registry.LocalMachine.OpenSubKey(BHO_REGISTRY_KEY_NAME, true);
-            if (key == null)
-            {
+            if (key == null){
                 key = Registry.LocalMachine.CreateSubKey(BHO_REGISTRY_KEY_NAME);
             }
-
-            
-            // 32 digits separated by hyphens, enclosed in braces: 
-            // {00000000-0000-0000-0000-000000000000}
             string bhoKeyStr = t.GUID.ToString("B");
-
             RegistryKey bhoKey = key.OpenSubKey(bhoKeyStr, true);
             
-            // Create a new key.
-            if (bhoKey == null)
-            {
+            if (bhoKey == null){
                 bhoKey = key.CreateSubKey(bhoKeyStr);
             }
 
             // NoExplorer:dword = 1 prevents the BHO to be loaded by Explorer
             string name = "NoExplorer";
-            object value = (object)1;
+            object value = (object) 1;
             bhoKey.SetValue(name, value);
             key.Close();
             bhoKey.Close();
 
-            RegistryKey classkey = Registry.ClassesRoot.OpenSubKey("CLSID\\" + bhoKeyStr, true);
-            if (classkey == null)
-            {
-                classkey = Registry.ClassesRoot.CreateSubKey("CLSID\\" + bhoKeyStr);
+            string version = t.Assembly.GetName().Version.Major.ToString() + "." + t.Assembly.GetName().Version.Minor.ToString();
+            if (version == "0.0") version = "1.0";
+            
+            //Default registry according to architecture
+            RegistryKey classkey = Registry.LocalMachine.OpenSubKey("Software\\Classes\\CLSID\\" + bhoKeyStr, true);
+            if (classkey == null){
+                classkey = Registry.LocalMachine.CreateSubKey("Software\\Classes\\CLSID\\" + bhoKeyStr);
             }
-
             classkey.CreateSubKey("Control");
             classkey.CreateSubKey("Implemented Categories\\{59fb2056-d625-48d0-a944-1a85b5ab2640}");
             classkey.CreateSubKey("MiscStatus").SetValue("", "0");
-            classkey.CreateSubKey("TypeLib").SetValue("",Marshal.GetTypeLibGuidForAssembly(t.Assembly).ToString("B"));
+            classkey.CreateSubKey("TypeLib").SetValue("", Marshal.GetTypeLibGuidForAssembly(t.Assembly).ToString("B"));
             classkey.CreateSubKey("Programmable");
-            
-            string version = t.Assembly.GetName().Version.Major.ToString() + "." + t.Assembly.GetName().Version.Minor.ToString();
-            if (version == "0.0") version = "1.0";
-
             classkey.CreateSubKey("Version").SetValue("", version);
-
-
             classkey.Close();
+
+
+            //check on architecture and add architecture specific key
+            RegistryKey baseReg = null;
+
+            if (IS_32_BIT){
+                baseReg = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32);
+            }
+            else {
+                baseReg = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64);
+            }
+
+            RegistryKey classkey2 = baseReg.OpenSubKey("Software\\Classes\\CLSID\\" + bhoKeyStr, true);
+            if (classkey2 == null)
+            {
+                classkey2 = baseReg.CreateSubKey("Software\\Classes\\CLSID\\" + bhoKeyStr);
+            }
+            classkey2.CreateSubKey("Control");
+            classkey2.CreateSubKey("Implemented Categories\\{59fb2056-d625-48d0-a944-1a85b5ab2640}");
+            classkey2.CreateSubKey("MiscStatus").SetValue("", "0");
+            classkey2.CreateSubKey("TypeLib").SetValue("", Marshal.GetTypeLibGuidForAssembly(t.Assembly).ToString("B"));
+            classkey2.CreateSubKey("Programmable");
+            classkey2.CreateSubKey("Version").SetValue("", version);
+            classkey2.Close();
+            baseReg.Close();
 
         }
 
@@ -99,13 +116,34 @@ namespace GuideMePlayer
             {
                 key.DeleteSubKey(guidString, false);
             }
-
             
-
             try
             {
-                Registry.ClassesRoot.DeleteSubKeyTree(
-                "CLSID\\" + t.GUID.ToString("B"));
+                
+                
+                RegistryKey classkey = Registry.LocalMachine.OpenSubKey("Software\\Classes\\CLSID\\" + guidString, true);
+                if (classkey != null) {
+                    Registry.LocalMachine.DeleteSubKeyTree("Software\\Classes\\CLSID\\" + guidString);
+                }
+
+
+                RegistryKey baseReg = null;
+
+                if (IS_32_BIT)
+                {
+                    baseReg = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32);
+                }
+                else
+                {
+                    baseReg = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64);
+                }
+
+                RegistryKey classkey2 = baseReg.OpenSubKey("Software\\Classes\\CLSID\\" + guidString, true);
+                if (classkey2 != null)
+                {
+                    baseReg.DeleteSubKeyTree("Software\\Classes\\CLSID\\" + guidString);
+                }
+                baseReg.Close();
             }
             catch (ArgumentException) { }
         }
@@ -120,6 +158,7 @@ namespace GuideMePlayer
         /// <param name="site"></param>
         public void SetSite(Object site)
         {
+            //SysForms.MessageBox.Show("Set Site event happened");
             if (site != null)
             {
                 ieInstance = (InternetExplorer)site;
@@ -128,6 +167,7 @@ namespace GuideMePlayer
                 // Register the DocumentComplete event. 
                 webBrowser.DocumentComplete += new DWebBrowserEvents2_DocumentCompleteEventHandler(this.OnDocumentComplete);
                 webBrowser.DownloadComplete += new DWebBrowserEvents2_DownloadCompleteEventHandler(this.OnDownloadComplete);
+                
             }
         }
 
@@ -138,6 +178,7 @@ namespace GuideMePlayer
         /// </summary>
         public void GetSite(ref Guid guid, out Object ppvSite)
         {
+            //SysForms.MessageBox.Show("Get Site event happened");
             IntPtr punk = Marshal.GetIUnknownForObject(ieInstance);
             ppvSite = new object();
             IntPtr ppvSiteIntPtr = Marshal.GetIUnknownForObject(ppvSite);
@@ -154,12 +195,14 @@ namespace GuideMePlayer
 
         private void OnDownloadComplete()
         {
+            //SysForms.MessageBox.Show("DownloadComplete event happened");
             HTMLDocument document = (HTMLDocument) webBrowser.Document;
             this.InjectJavascript(document);
         }
 
         public void OnDocumentComplete(object pDisp, ref object URL)
         {
+            //SysForms.MessageBox.Show("DocumentComplete event happened");
             HTMLDocument document = (HTMLDocument) webBrowser.Document;
             this.InjectJavascript(document);
         }
