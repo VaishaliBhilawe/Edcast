@@ -18,7 +18,7 @@ namespace GuideMePlayer
     
     public class BHO : IObjectWithSite
     {
-        private const Boolean IS_32_BIT = true;
+        private const Boolean IS_32_BIT = false;
         private InternetExplorer ieInstance;
         public const string BHO_REGISTRY_KEY_NAME = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Browser Helper Objects";
         private const string EXTENSIONNAME = "GuideMePlayer";
@@ -79,19 +79,22 @@ namespace GuideMePlayer
 
 
             //check on architecture and add architecture specific key
-            RegistryKey baseReg = null;
+            RegistryKey baseLocalMachine = null;
+            RegistryKey baseCurrentUser = null;
 
             if (IS_32_BIT){
-                baseReg = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32);
+                baseLocalMachine = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32);
+                baseCurrentUser = RegistryKey.OpenBaseKey(RegistryHive.CurrentUser, RegistryView.Registry32);
             }
             else {
-                baseReg = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64);
+                baseLocalMachine = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64);
+                baseCurrentUser = RegistryKey.OpenBaseKey(RegistryHive.CurrentUser, RegistryView.Registry32);
             }
 
-            RegistryKey classkey2 = baseReg.OpenSubKey("Software\\Classes\\CLSID\\" + bhoKeyStr, true);
+            RegistryKey classkey2 = baseLocalMachine.OpenSubKey("Software\\Classes\\CLSID\\" + bhoKeyStr, true);
             if (classkey2 == null)
             {
-                classkey2 = baseReg.CreateSubKey("Software\\Classes\\CLSID\\" + bhoKeyStr);
+                classkey2 = baseLocalMachine.CreateSubKey("Software\\Classes\\CLSID\\" + bhoKeyStr);
             }
             classkey2.CreateSubKey("Control");
             classkey2.CreateSubKey("Implemented Categories\\{59fb2056-d625-48d0-a944-1a85b5ab2640}");
@@ -99,8 +102,29 @@ namespace GuideMePlayer
             classkey2.CreateSubKey("TypeLib").SetValue("", Marshal.GetTypeLibGuidForAssembly(t.Assembly).ToString("B"));
             classkey2.CreateSubKey("Programmable");
             classkey2.CreateSubKey("Version").SetValue("", version);
+
             classkey2.Close();
-            baseReg.Close();
+
+
+            //Ignore framework Key
+
+            String ignoreAprovalCheckPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\ext";
+            RegistryKey policykey = baseLocalMachine.OpenSubKey(ignoreAprovalCheckPath, true);
+            if (policykey == null) {
+                policykey = baseLocalMachine.CreateSubKey(ignoreAprovalCheckPath);
+            }
+            policykey.SetValue("IgnoreFrameApprovalCheck", (Object) 1, RegistryValueKind.DWord);
+                
+
+            String enableAddonPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Ext\\Setting\\" + bhoKeyStr;
+            RegistryKey enableaddonkey = baseCurrentUser.OpenSubKey(enableAddonPath, true);
+            if (enableaddonkey == null){
+                enableaddonkey = baseCurrentUser.CreateSubKey(enableAddonPath);
+            }
+            enableaddonkey.SetValue("Flags", (Object) 1024, RegistryValueKind.DWord);
+
+            baseLocalMachine.Close();
+            baseCurrentUser.Close();
 
         }
 
@@ -127,23 +151,36 @@ namespace GuideMePlayer
                 }
 
 
-                RegistryKey baseReg = null;
+                RegistryKey baseLocalMachine = null;
+                RegistryKey baseCurrentUser = null;
 
                 if (IS_32_BIT)
                 {
-                    baseReg = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32);
+                    baseLocalMachine = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32);
+                    baseCurrentUser = RegistryKey.OpenBaseKey(RegistryHive.CurrentUser, RegistryView.Registry32);
                 }
                 else
                 {
-                    baseReg = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64);
+                    baseLocalMachine = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64);
+                    baseCurrentUser = RegistryKey.OpenBaseKey(RegistryHive.CurrentUser, RegistryView.Registry64);
                 }
 
-                RegistryKey classkey2 = baseReg.OpenSubKey("Software\\Classes\\CLSID\\" + guidString, true);
+                RegistryKey classkey2 = baseLocalMachine.OpenSubKey("Software\\Classes\\CLSID\\" + guidString, true);
                 if (classkey2 != null)
                 {
-                    baseReg.DeleteSubKeyTree("Software\\Classes\\CLSID\\" + guidString);
+                    baseLocalMachine.DeleteSubKeyTree("Software\\Classes\\CLSID\\" + guidString);
                 }
-                baseReg.Close();
+                baseLocalMachine.Close();
+
+
+                String enableAddonPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Ext\\Settings\\" + guidString;
+                RegistryKey enableaddonkey = baseCurrentUser.OpenSubKey(enableAddonPath, true);
+                if (enableaddonkey != null)
+                {
+                    baseCurrentUser.DeleteSubKeyTree(enableAddonPath);
+                }
+
+
             }
             catch (ArgumentException) { }
         }
